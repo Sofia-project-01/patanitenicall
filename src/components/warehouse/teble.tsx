@@ -1,7 +1,7 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import  { useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
 import { Table, Input, Button, Space, Image, Select, Modal, Row, Col } from 'antd'; // เพิ่ม Modal จาก antd
-import { DeleteOutlined, EditOutlined, EnvironmentOutlined, ExclamationCircleOutlined } from '@ant-design/icons'; // เพิ่ม ExclamationCircleOutlined จาก ant-design/icons
+import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons'; // เพิ่ม ExclamationCircleOutlined จาก ant-design/icons
 import { Link } from 'react-router-dom';
 
 const { confirm } = Modal;
@@ -74,8 +74,8 @@ function TablePage() {
         deletePost(id);
       },
       onCancel() {
-        console.log('Cancel');
-      },
+        
+      }
     });
   };
 
@@ -140,7 +140,7 @@ function TablePage() {
 
   return (
     <div>
-       <Row align="middle">
+       <Row gutter={8} align="middle">
        <Col className='space-x-2 '>
           <Input
             style={{ width: "200px" }}
