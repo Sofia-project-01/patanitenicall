@@ -17,11 +17,10 @@ const beforeUpload = (file: FileType) => {
     message.error('You can only upload JPG/PNG file!');
     return false;
   }
-  const isLt2M = file.size / 1024 / 1024 < 10;
-  console.log(isLt2M)
+  const isLt2M = file.size / 1024 / 1024 < 2;
   if (!isLt2M) {
     message.error('Image must be smaller than 2MB!');
-    return false; 
+    return false;
   }
   return isJpgOrPng && isLt2M;
 };
@@ -40,21 +39,18 @@ const Cimage: React.FC<CimageProps> = ({ onImageChange, onImageUploadError }) =>
       setLoading(true);
       return;
     }
-    
     if (info.file.status === 'done') {
       getBase64(info.file.originFileObj as FileType, (url) => {
         setLoading(false);
         setImageUrl(url);
         onImageChange(url);
-        
       });
     }
     if (info.file.status === 'error') {
       setLoading(false);
-      onImageUploadError(); 
+      onImageUploadError();
     }
   };
-  
 
   const uploadButton = (
     <button style={{ border: 0, background: 'none' }} type="button">
@@ -68,7 +64,7 @@ const Cimage: React.FC<CimageProps> = ({ onImageChange, onImageUploadError }) =>
       <Upload
         name="avatar"
         listType="picture-card"
-        className="avatar-uploader rounded-full"
+        className="avatar-uploader"
         showUploadList={false}
         action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
         beforeUpload={beforeUpload}
