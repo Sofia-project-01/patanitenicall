@@ -21,6 +21,7 @@ interface Coffee {
 
 function AddProduce() {
   const [editedCoffee, setEditedCoffee] = useState<Coffee | null>(null);
+  const [_,setFormData] = useState ()
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -39,15 +40,20 @@ function AddProduce() {
   const handleInputChange = (changedValues: any, allValues: any) => {
     setEditedCoffee({ ...editedCoffee, ...allValues });
   };
+  const handleImageChange = (imageUrl: string) => {
+    setFormData((prevFormData: any) => ({ ...prevFormData, image: imageUrl }));
+  };
 
   const saveChanges = async () => {
     try {
-      await axios.put(`http://localhost:3000/coffee`, editedCoffee);
+      await axios.post(`http://localhost:3000/coffee`, editedCoffee);
+      form.resetFields(); // รีเซ็ตฟอร์มให้เป็นค่าเริ่มต้น
+      console.log("Data saved successfully!");
     } catch (error) {
       console.error('Error saving changes:', error);
     }
   };
-
+  
   return (
     <div>
       <Row>
@@ -59,61 +65,61 @@ function AddProduce() {
               onValuesChange={handleInputChange}
               className='p-8'
             >
-              <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Cimage onImageChange={function (imageUrl: string): void {
-                  throw new Error('Function not implemented.');
-                }} onImageUploadError={function (): void {
-                  throw new Error('Function not implemented.');
-                }} />
+              <Col  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Cimage onImageChange={handleImageChange} onImageUploadError={() => {}} />
               </Col>
-              <Row className='space-x-4' justify={'space-evenly'}>
+              <Row gutter={8} justify={'space-between'}>
                 <Col>
-                  <Row className='space-x-4'>
-                    <Col>
+                  <Row gutter={8}>
+                    <Col span={12}>
                     <Form.Item name="title" label="Title" rules={[{ required: true, message: 'Please input the Title!' }]}>
-                      <Input min={0} className='w-[250px]' />
+                      <Input min={0} className='w-[full]' />
                     </Form.Item>
                     </Col>
-                    <Col>
+                    <Col span={12}>
                     <Form.Item name="technos" label="Technos" rules={[{ required: true, message: 'Please input the technos!' }]}>
-                      <Input min={0} className='w-[250px]' />
+                      <Input min={0} className='w-[full]' />
                     </Form.Item>
                     </Col>
                   </Row>
-                  <Row className='space-x-4'>
-                  <Col>
+                  <Row  gutter={8}>
+                  <Col span={12}>
                     <Form.Item name="Origin" label="Origin" rules={[{ required: true, message: 'Please input the Origin!' }]}>
-                      <Input min={0} className='w-[250px]' />
+                      <Input min={0} className='w-[full]' />
                     </Form.Item>
                     </Col>
-                    <Col>
+                    <Col span={12}>
                     <Form.Item name="Process" label="Process" rules={[{}]}>
-                      <Input min={0} className='w-[250px]' />
+                      <Input min={0} className='w-[full]' />
                     </Form.Item>
                     </Col>
                   </Row>
-                  <Row className='space-x-4'>
-                  <Col>
+                  <Row gutter={8}>
+                    <Col span={6}>
+                    <Form.Item name="Size" label="Size" rules={[{required: true, message: 'Please input the price!' }]}>
+                      <InputNumber min={0} className='w-[full]' />
+                    </Form.Item>
+                    </Col>
+                    <Col span={6}>
+                    <Form.Item name="price" label="Price" rules={[{ required: true, message: 'Please input the price!' }]}>
+                      <InputNumber min={0} className='w-[full]' />
+                    </Form.Item>
+                    </Col>
+                    <Col span={6}>
                     <Form.Item name="Roastlevel" label="Roast Level" rules={[{ required: true, message: 'Please select the roast level!' }]}>
-                      <Select style={{ width: '100%' }}>
+                      <Select className='w-[full]'>
                         <Option value="Light">Light</Option>
                         <Option value="Medium">Medium</Option>
                         <Option value="Dark">Dark</Option>
                       </Select>
                     </Form.Item>
                     </Col>
-                    <Col>
-                    </Col>
-                    <Form.Item name="Size" label="Size" rules={[{required: true, message: 'Please input the price!' }]}>
-                      <InputNumber min={0} className='w-[100px]' />
-                    </Form.Item>
-                    
-                    <Form.Item name="price" label="Price" rules={[{ required: true, message: 'Please input the price!' }]}>
-                      <InputNumber min={0} className='w-[94px]' />
-                    </Form.Item>
+                    <Col span={6}>
                     <Form.Item name="province" label="Province">
-                      <Input />
+                      <Input className='w-[full]' />
                     </Form.Item>
+                    </Col>
+                    
                   </Row>
                 </Col>
                 <Col>
