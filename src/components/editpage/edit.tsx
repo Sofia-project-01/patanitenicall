@@ -1,5 +1,3 @@
-import { EditOutlined, EnvironmentOutlined } from '@ant-design/icons';
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, Card, Col, Row, Image, Form, Input, InputNumber, Select } from 'antd';
@@ -34,12 +32,14 @@ const EditProduce: React.FC = () => {
 
   useEffect(() => {
     fetchData();
+  }, [id]); // เรียกใช้งาน fetchData เมื่อ id เปลี่ยนแปลง
+  
+  useEffect(() => {
     if (coffees.length > 0) {
-      setEditMode(coffees[0].id);
-      setNewCoffee(coffees[0]);
+      setNewCoffee(coffees[0]); // กำหนดค่าเริ่มต้นของ newCoffee เมื่อมีการเปลี่ยนแปลงใน coffees
     }
   }, [coffees]);
-
+  
   const fetchData = async () => {
     try {
       const response = await axios.get(`http://localhost:3000/coffee/${id}`);
@@ -48,23 +48,26 @@ const EditProduce: React.FC = () => {
       console.error('Error fetching data:', error);
     }
   };
-
+  
+  // แก้ไข handleInputChange เพื่อให้มันเข้ากับชื่อของฟิลด์ในฟอร์ม
   const handleInputChange = (changedValues: any) => {
     setNewCoffee({
       ...newCoffee,
       ...changedValues,
     });
   };
-
+  
+  // แก้ไข updateCoffee เพื่อส่งข้อมูลใหม่ไปยังเซิร์ฟเวอร์เมื่อคุณคลิกปุ่มอัปเดต
   const updateCoffee = async () => {
     try {
       await axios.patch(`http://localhost:3000/coffee/${id}`, newCoffee);
-      fetchData();
+      fetchData(); // เรียกใช้ fetchData เพื่อรีเฟรชข้อมูลหลังจากการอัปเดต
       setEditMode(null);
     } catch (error) {
       console.error('Error updating coffee:', error);
     }
   };
+  
 
   return (
     <div>
@@ -83,62 +86,95 @@ const EditProduce: React.FC = () => {
       </Card>
       <Row gutter={[20, 20]} className='p-4'>
         {coffees.map(coffee => (
-          <Col xs={24} sm={12} md={12} lg={12} xl={24} key={coffee.id}>
+          <Col xs={24} sm={12} md={12} lg={24} xl={24} key={coffee.id}>
             <Card className='h-full w-full'>
               <Col className='flex justify-center'>
-                <Image src={coffee.img} alt={coffee.title} className='rounded-lg' style={{ height: "200px" }} />
-              </Col>
-              <Col className='mt-4'>
-                <Form
-                  layout="vertical"
-                  initialValues={coffee}
-                  onValuesChange={handleInputChange}
-                >
-                 <Form.Item name="title" label="Title" rules={[{ required: true, message: 'Please input the Title!' }]}>
-                      <Input min={0} style={{ width: '100%' }} />
+                <Col span={24} className='mt-4'>
+                  <Col className='flex justify-center'>
+                    <Image src={coffee.img} alt={coffee.title} className='rounded-lg' style={{ height: "200px" }} />
+                  </Col>
+
+                  <Form
+                    layout="vertical"
+                    initialValues={coffee}
+                    onValuesChange={handleInputChange}
+                  >
+                    
+                    <Row className='mt-8' gutter={8} justify={'space-between'}>
+                <Col>
+                  <Row gutter={8}>
+                    <Col span={12}>
+                    <Form.Item name="title" label="Title" rules={[{ required: true, message: 'Please input the Title!' }]}>
+                      <Input min={0} className='w-[full]' />
                     </Form.Item>
+                    </Col>
+                    <Col span={12}>
                     <Form.Item name="technos" label="Technos" rules={[{ required: true, message: 'Please input the technos!' }]}>
-                      <Input min={0} style={{ width: '100%' }} />
+                      <Input min={0} className='w-[full]' />
                     </Form.Item>
+                    </Col>
+                  </Row>
+                  <Row  gutter={8}>
+                  <Col span={12}>
+                    <Form.Item name="Origin" label="Origin" rules={[{ required: true, message: 'Please input the Origin!' }]}>
+                      <Input min={0} className='w-[full]' />
+                    </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                    <Form.Item name="Process" label="Process" rules={[{}]}>
+                      <Input min={0} className='w-[full]' />
+                    </Form.Item>
+                    </Col>
+                  </Row>
+                  <Row gutter={8}>
+                    <Col span={6}>
+                    <Form.Item name="Size" label="Size" rules={[{required: true, message: 'Please input the price!' }]}>
+                      <InputNumber min={0} className='w-[full]' />
+                    </Form.Item>
+                    </Col>
+                    <Col span={6}>
+                    <Form.Item name="price" label="Price" rules={[{ required: true, message: 'Please input the price!' }]}>
+                      <InputNumber min={0} className='w-[full]' />
+                    </Form.Item>
+                    </Col>
+                    <Col span={6}>
                     <Form.Item name="Roastlevel" label="Roast Level" rules={[{ required: true, message: 'Please select the roast level!' }]}>
-                      <Select style={{ width: '100%' }}>
+                      <Select className='w-[full]'>
                         <Option value="Light">Light</Option>
                         <Option value="Medium">Medium</Option>
                         <Option value="Dark">Dark</Option>
                       </Select>
                     </Form.Item>
-                    <Form.Item name="Origin" label="Origin" rules={[{ required: true, message: 'Please input the Origin!' }]}>
-                      <Input min={0} style={{ width: '100%' }} />
-                    </Form.Item>
-                    <Form.Item name="Process" label="Process" rules={[]}>
-                        <Input min={0} style={{}}></Input>
-                    </Form.Item>
-                    <Form.Item name="price" label="Price" rules={[{ required: true, message: 'Please input the price!' }]}>
-                      <InputNumber min={0} style={{ width: '100%' }} />
-                    </Form.Item>
-                    <Form.Item name="Size" label="Size" rules={[{}]}>
-                        <InputNumber min={0} style={{}}/>
-                    </Form.Item>
-                   
-                    <Form.Item name="about" label="About">
-                      <TextArea rows={4} />
-                    </Form.Item>
+                    </Col>
+                    <Col span={6}>
                     <Form.Item name="province" label="Province">
-                      <Input />
+                      <Input className='w-[full]' />
                     </Form.Item>
-                  <Form.Item>
-                    <Row className='justify-end space-x-4'>
-                    <Link to="/Warehouse">
-                      <Button className='bg-red-500 text-white' onClick={updateCoffee}>
-                      CANCELL
-                    </Button>
-                    </Link>
-                    <Button className='bg-sky-500 text-white' onClick={updateCoffee}>
-                      UPDATE
-                    </Button>
-                    </Row>
+                    </Col>
+                    
+                  </Row>
+                </Col>
+                <Col>
+                  <Form.Item name="about" label="About">
+                    <TextArea className='w-[600px]' rows={9} />
                   </Form.Item>
-                </Form>
+                </Col>
+              </Row>
+                    <Form.Item>
+                      <Row className='justify-end space-x-4'>
+                        <Link to="/Warehouse">
+                          <Button className='bg-red-500 text-white'>
+                            CANCELL
+                          </Button>
+                        </Link>
+                        <Button className='bg-sky-500 text-white' onClick={updateCoffee}>
+                          UPDATE
+                        </Button>
+                      </Row>
+                    </Form.Item>
+
+                  </Form>
+                </Col>
               </Col>
             </Card>
           </Col>
