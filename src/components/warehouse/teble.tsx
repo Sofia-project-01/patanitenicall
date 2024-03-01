@@ -1,10 +1,9 @@
 import  { useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
-import { Table, Input, Button, Space, Image, Select, Modal, Row, Col } from 'antd'; // เพิ่ม Modal จาก antd
-import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons'; // เพิ่ม ExclamationCircleOutlined จาก ant-design/icons
+import { Table, Input, Button, Space, Image, Row, Col } from 'antd';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'; 
 import { Link } from 'react-router-dom';
-
-const { confirm } = Modal;
+import Swal from 'sweetalert2';
 
 interface Post {
   province: string;
@@ -19,11 +18,11 @@ interface Post {
 
 function TablePage() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [technos, setTechnos] = useState<string[]>([]);
-  const [error, setError] = useState<string>('');
+  const [_, setTechnos] = useState<string[]>([]);
+  const [, setError] = useState<string>('');
   const [searchTitle, setSearchTitle] = useState<string>('');
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
-  const [selectedTechno, setSelectedTechno] = useState<string>('');
+  // const [selectedTechno, setSelectedTechno] = useState<string>('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,34 +54,37 @@ function TablePage() {
     setFilteredPosts(filtered);
   };
 
-  const handleFilterByTechno = (selectedTechno: string) => {
-    setSelectedTechno(selectedTechno);
-    if (selectedTechno === 'all') {
-      setFilteredPosts(posts);
-    } else {
-      const filteredPosts = posts.filter(post => post.technos.includes(selectedTechno));
-      setFilteredPosts(filteredPosts);
-    }
-  };
+  // const handleFilterByTechno = (selectedTechno: string) => {
+  //   setSelectedTechno(selectedTechno);
+  //   if (selectedTechno === 'all') {
+  //     setFilteredPosts(posts);
+  //   } else {
+  //     const filteredPosts = posts.filter(post => post.technos.includes(selectedTechno));
+  //     setFilteredPosts(filteredPosts);
+  //   }
+  // };
+
+
 
   const handleDelete = (id: number) => {
-    confirm({
+    Swal.fire({
       title: 'Are you sure you want to delete this item?',
-      icon: <ExclamationCircleOutlined />,
-      content: 'This action cannot be undone.',
-      onOk() {
+      icon: 'warning',
+      text: 'This action cannot be undone.',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
         deletePost(id);
-      },
-      onCancel() {
-        
       }
     });
   };
-
+  
   const deletePost = async (id: number) => {
     try {
       await axios.delete(`http://localhost:3000/coffee/${id}`);
-      // หลังจากลบข้อมูลสำเร็จ ให้ทำการดึงข้อมูลใหม่อีกครั้ง
       const response = await axios.get<Post[]>('http://localhost:3000/coffee');
       setPosts(response.data);
       setFilteredPosts(response.data);
@@ -140,8 +142,8 @@ function TablePage() {
 
   return (
     <div>
-       <Row gutter={8} align="middle">
-       <Col className='space-x-2 '>
+       <Row className='justify-end' gutter={8} align="middle">
+       <Col className='space-x-2'>
           <Input
             style={{ width: "200px" }}
             placeholder="Search"
@@ -154,7 +156,7 @@ function TablePage() {
             Search
           </Button>
         </Col>
-      <div className='filter-buttons'>
+      {/* <div className='filter-buttons'>
         <Select
           defaultValue="all"
           style={{ width: 120 }}
@@ -165,7 +167,7 @@ function TablePage() {
             <Select.Option key={index} value={techno}>{techno}</Select.Option>
           ))}
         </Select>
-      </div>
+      </div> */}
       </Row>
       <div className='mt-4'>
       <Table columns={columns} dataSource={filteredPosts} />
