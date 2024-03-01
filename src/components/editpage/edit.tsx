@@ -27,16 +27,16 @@ const EditProduce: React.FC = () => {
     img: '',
     province: '',
   });
-  const [editMode, setEditMode] = useState<number | null>(null);
+  const [_, setEditMode] = useState<number | null>(null);
   const { id } = useParams<{ id: string }>(); // Get ID from URL parameters
 
   useEffect(() => {
     fetchData();
-  }, [id]); // เรียกใช้งาน fetchData เมื่อ id เปลี่ยนแปลง
+  }, [id]);
   
   useEffect(() => {
     if (coffees.length > 0) {
-      setNewCoffee(coffees[0]); // กำหนดค่าเริ่มต้นของ newCoffee เมื่อมีการเปลี่ยนแปลงใน coffees
+      setNewCoffee(coffees[0]);
     }
   }, [coffees]);
   
@@ -49,7 +49,6 @@ const EditProduce: React.FC = () => {
     }
   };
   
-  // แก้ไข handleInputChange เพื่อให้มันเข้ากับชื่อของฟิลด์ในฟอร์ม
   const handleInputChange = (changedValues: any) => {
     setNewCoffee({
       ...newCoffee,
@@ -57,7 +56,6 @@ const EditProduce: React.FC = () => {
     });
   };
   
-  // แก้ไข updateCoffee เพื่อส่งข้อมูลใหม่ไปยังเซิร์ฟเวอร์เมื่อคุณคลิกปุ่มอัปเดต
   const updateCoffee = async () => {
     try {
       await axios.patch(`http://localhost:3000/coffee/${id}`, newCoffee);
@@ -81,7 +79,7 @@ const EditProduce: React.FC = () => {
         <Row className='mt-4'>
           <p className='textsm font-bold text-blue-700'>EditProduce</p>
           <p className='textsm font-bold text-neutral-600'>/</p>
-          <p className='textsm font-bold text-neutral-600'><Link to="/AddProducePage">AddProduce</Link></p>
+          <p className='textsm font-bold text-neutral-600'><Link to="/AddProduce">AddProduce</Link></p>
         </Row>
       </Card>
       <Row gutter={[20, 20]} className='p-4'>
