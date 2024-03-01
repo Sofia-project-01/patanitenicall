@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { message, Upload } from 'antd';
+import { Form, message, Upload } from 'antd';
 import type { GetProp, UploadProps } from 'antd';
+import FormItem from 'antd/es/form/FormItem';
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
@@ -60,7 +61,7 @@ const Cimage: React.FC<CimageProps> = ({ onImageChange, onImageUploadError }) =>
   );
 
   return (
-    <>
+    <Form.Item>
       <Upload
         name="avatar"
         listType="picture-card"
@@ -70,9 +71,9 @@ const Cimage: React.FC<CimageProps> = ({ onImageChange, onImageUploadError }) =>
         beforeUpload={beforeUpload}
         onChange={handleChange}
       >
-        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+        {imageUrl ? <img src={imageUrl} alt="avatar"/> : uploadButton}
       </Upload>
-    </>
+    </Form.Item>
   );
 };
 
