@@ -2,6 +2,7 @@ import { Card, Col, Input, InputNumber, Form, Row, Select, Typography, Button } 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cimage from '../upload/upload';
+import { Link } from 'react-router-dom';
 const { Option } = Select;
 const { TextArea } = Input;
 
@@ -13,7 +14,7 @@ interface Coffee {
   title: string;
   id: number;
   Size: number;
-  img: string;
+  imageUrl: string;
   price: number;
   Roastlevel: string;
   province: string;
@@ -21,7 +22,19 @@ interface Coffee {
 
 function AddProduce() {
   const [editedCoffee, setEditedCoffee] = useState<Coffee | null>(null);
-  const [_,setFormData] = useState ()
+  const [_, setFormData] = useState<Coffee>({
+    Origin: "",
+    Process: "",
+    technos: "",
+    about: "",
+    title: "",
+    id: 0,
+    Size: 0,
+    imageUrl: "",
+    price: 0,
+    Roastlevel: "",
+    province: "",
+  })
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -41,8 +54,14 @@ function AddProduce() {
     setEditedCoffee({ ...editedCoffee, ...allValues });
   };
   const handleImageChange = (imageUrl: string) => {
-    setFormData((prevFormData: any) => ({ ...prevFormData, image: imageUrl }));
-  };
+    setEditedCoffee((prevEditedCoffee: Coffee | null) => {
+        if (prevEditedCoffee) {
+            return { ...prevEditedCoffee, img: imageUrl };
+        }
+        return null;
+    });
+};
+
 
   const saveChanges = async () => {
     try {
@@ -53,7 +72,7 @@ function AddProduce() {
       console.error('Error saving changes:', error);
     }
   };
-  
+
   return (
     <div>
       <Row>
@@ -65,61 +84,63 @@ function AddProduce() {
               onValuesChange={handleInputChange}
               className='p-8'
             >
-              <Col  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Cimage onImageChange={handleImageChange} onImageUploadError={() => {}} />
+              <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Form.Item name="image">
+                <Cimage onImageChange={handleImageChange} onImageUploadError={() => { }} />
+                </Form.Item>
               </Col>
               <Row gutter={8} justify={'space-between'}>
                 <Col>
                   <Row gutter={8}>
                     <Col span={12}>
-                    <Form.Item name="title" label="Title" rules={[{ required: true, message: 'Please input the Title!' }]}>
-                      <Input min={0} className='w-[full]' />
-                    </Form.Item>
+                      <Form.Item name="title" label="Title" rules={[{ required: true, message: 'Please input the Title!' }]}>
+                        <Input min={0} className='w-[full]' />
+                      </Form.Item>
                     </Col>
                     <Col span={12}>
-                    <Form.Item name="technos" label="Technos" rules={[{ required: true, message: 'Please input the technos!' }]}>
-                      <Input min={0} className='w-[full]' />
-                    </Form.Item>
+                      <Form.Item name="technos" label="Technos" rules={[{ required: true, message: 'Please input the technos!' }]}>
+                        <Input min={0} className='w-[full]' />
+                      </Form.Item>
                     </Col>
                   </Row>
-                  <Row  gutter={8}>
-                  <Col span={12}>
-                    <Form.Item name="Origin" label="Origin" rules={[{ required: true, message: 'Please input the Origin!' }]}>
-                      <Input min={0} className='w-[full]' />
-                    </Form.Item>
+                  <Row gutter={8}>
+                    <Col span={12}>
+                      <Form.Item name="Origin" label="Origin" rules={[{ required: true, message: 'Please input the Origin!' }]}>
+                        <Input min={0} className='w-[full]' />
+                      </Form.Item>
                     </Col>
                     <Col span={12}>
-                    <Form.Item name="Process" label="Process" rules={[{}]}>
-                      <Input min={0} className='w-[full]' />
-                    </Form.Item>
+                      <Form.Item name="Process" label="Process" rules={[{}]}>
+                        <Input min={0} className='w-[full]' />
+                      </Form.Item>
                     </Col>
                   </Row>
                   <Row gutter={8}>
                     <Col span={6}>
-                    <Form.Item name="Size" label="Size" rules={[{required: true, message: 'Please input the price!' }]}>
-                      <InputNumber min={0} className='w-[full]' />
-                    </Form.Item>
+                      <Form.Item name="Size" label="Size" rules={[{ required: true, message: 'Please input the price!' }]}>
+                        <InputNumber min={0} className='w-[full]' />
+                      </Form.Item>
                     </Col>
                     <Col span={6}>
-                    <Form.Item name="price" label="Price" rules={[{ required: true, message: 'Please input the price!' }]}>
-                      <InputNumber min={0} className='w-[full]' />
-                    </Form.Item>
+                      <Form.Item name="price" label="Price" rules={[{ required: true, message: 'Please input the price!' }]}>
+                        <InputNumber min={0} className='w-[full]' />
+                      </Form.Item>
                     </Col>
                     <Col span={6}>
-                    <Form.Item name="Roastlevel" label="Roast Level" rules={[{ required: true, message: 'Please select the roast level!' }]}>
-                      <Select className='w-[full]'>
-                        <Option value="Light">Light</Option>
-                        <Option value="Medium">Medium</Option>
-                        <Option value="Dark">Dark</Option>
-                      </Select>
-                    </Form.Item>
+                      <Form.Item name="Roastlevel" label="Roast Level" rules={[{ required: true, message: 'Please select the roast level!' }]}>
+                        <Select className='w-[full]'>
+                          <Option value="Light">Light</Option>
+                          <Option value="Medium">Medium</Option>
+                          <Option value="Dark">Dark</Option>
+                        </Select>
+                      </Form.Item>
                     </Col>
                     <Col span={6}>
-                    <Form.Item name="province" label="Province">
-                      <Input className='w-[full]' />
-                    </Form.Item>
+                      <Form.Item name="province" label="Province">
+                        <Input className='w-[full]' />
+                      </Form.Item>
                     </Col>
-                    
+
                   </Row>
                 </Col>
                 <Col>
@@ -130,7 +151,10 @@ function AddProduce() {
               </Row>
             </Form>
             <div className='text-black box-border mt-4 flex justify-end '>
-              <Button type="primary" onClick={saveChanges} className='bg-sky-500'>Update</Button>
+              <Link to="/Warehouse">
+                <Button className='bg-red-500 text-white'> CANCELL </Button>
+              </Link>
+              <Button type="primary" onClick={saveChanges} className='bg-sky-500'>SAVE</Button>
             </div>
           </Card>
         ) : (
