@@ -152,7 +152,7 @@ function AddProduce() {
             </div>
           </Card>
         ) : (
-          <p>Loading...</p>
+          <p>Loading....</p>
         )}
       </Row>
     </div>
