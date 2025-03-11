@@ -69,7 +69,7 @@ const EditProduce: React.FC = () => {
 
   return (
     <div>
-      <Card className='m-4 p-0' style={{ padding: "0px" }}>
+      {/* <Card className='m-4 p-0' style={{ padding: "0px" }}>
         <h1 className='text-xl font-bold'>Your Account</h1>
         <Row>
           <p className='textsm text-neutral-600'>บัญชีของคุณ</p>
@@ -81,7 +81,7 @@ const EditProduce: React.FC = () => {
           <p className='textsm font-bold text-neutral-600'>/</p>
           <p className='textsm font-bold text-neutral-600'><Link to="/AddProduce">AddProduce</Link></p>
         </Row>
-      </Card>
+      </Card> */}
       <Row gutter={[20, 20]} className='p-4'>
         {coffees.map(coffee => (
           <Col xs={24} sm={12} md={12} lg={24} xl={24} key={coffee.id}>

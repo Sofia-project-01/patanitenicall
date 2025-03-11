@@ -5,7 +5,7 @@ function LayoutFooter() {
     return (
         <Layout.Footer>
             <Footer style={{ textAlign: 'center' }}>
-                Ligth Cooffee ©{new Date().getFullYear()} Created by Ant UED
+                technictani.ac.th ©{new Date().getFullYear()} Created by Ant UED
             </Footer>
         </Layout.Footer>
     )

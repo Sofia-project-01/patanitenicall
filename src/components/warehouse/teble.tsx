@@ -27,7 +27,7 @@ function TablePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<Post[]>('http://localhost:3000/coffee');
+        const response = await axios.get<Post[]>('http://localhost:3000/college');
         console.log('Response:', response);
 
         setPosts(response.data);
@@ -84,8 +84,8 @@ function TablePage() {
   
   const deletePost = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:3000/coffee/${id}`);
-      const response = await axios.get<Post[]>('http://localhost:3000/coffee');
+      await axios.delete(`http://localhost:3000/college/${id}`);
+      const response = await axios.get<Post[]>('http://localhost:3000/college');
       setPosts(response.data);
       setFilteredPosts(response.data);
     } catch (error) {
@@ -94,34 +94,55 @@ function TablePage() {
   };
 
   const columns = [
-    {
-      title: 'Image',
+    /*/{
+      title: 'รูปภาพ',
       dataIndex: 'img',
       key: 'img',
-      render: (img: string) => <Image className='rounded-full' src={img} width={50} />
-    },
+      render: (img: string) => <Image className='rounded-full' src={img} width={30} />
+      
+    },/*/
     {
-      title: 'Name Produce',
+      title: 'ชื่ออุปกรณ์',
       dataIndex: 'title',
       key: 'title',
     },
     {
-      title: 'Roast Level',
-      dataIndex: 'Roastlevel',
-      key: 'Roastlevel',
+      title: 'หมายเลขครุภัณฑ์',
+      dataIndex: 'technos',
+      key: 'technos',
     },
     {
-      title: 'Size (g)',
+      title: 'ประเภทอุปกรณ์',
+      dataIndex: 'Origin',
+      key: 'Origin',
+    },
+    /*/{
+      title: 'สถานที่',
+      dataIndex: 'Process',
+      key: 'Process',
+    },/*/
+    {
+      title: 'วันที่พบปัญหา',
       dataIndex: 'Size',
       key: 'Size',
     },
     {
-      title: 'Price (฿)',
+      title: 'ความเร่งด่วน',
+      dataIndex: 'Roastlevel',
+      key: 'Roastlevel',
+    },
+    {
+      title: 'ผู้แจ้ง',
       dataIndex: 'price',
       key: 'price',
     },
+    /*/{
+      title: 'ผู้ดูแล',
+      dataIndex: 'province',
+      key: 'province',
+    },/*/
     {
-      title: <EditOutlined />,
+      title: 'Status',
       key: 'actions',
       render: (text: any, record: Post) => (
         <Space size="middle">
@@ -169,7 +190,7 @@ function TablePage() {
         </Select>
       </div> */}
       </Row>
-      <div className='mt-4'>
+      <div className='mt-4 bg-gray-300 '>
       <Table columns={columns} dataSource={filteredPosts} />
       </div>
     </div>

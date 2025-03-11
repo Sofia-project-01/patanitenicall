@@ -7,7 +7,7 @@ import HomePageProduce from './components/homepage/index.tsx'
 import Produce from './components/produce/Produce.tsx'
 import Warehouse from './components/warehouse/index.tsx'
 import EditPageTable from './components/editpage/index.tsx'
-import AddProduce from './components/addproduce/addproduce.tsx'
+import AddProduce from './components/Report repairs/Report_repairs.tsx'
 
 
 const router = createBrowserRouter ([
@@ -32,7 +32,7 @@ const router = createBrowserRouter ([
       element:<EditPageTable />
      },
      {
-      path:"/AddProduce",
+      path:"/Report_repairs",
       element:<AddProduce />
      }
    ]

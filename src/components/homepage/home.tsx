@@ -1,10 +1,11 @@
-import  { useState, useEffect, ChangeEvent } from 'react';
+import  { useState, useEffect, ChangeEvent, ReactNode } from 'react';
 import axios from 'axios';
 import { Card, Row, Col, Input, Button, Image, Select } from 'antd';
-import { EnvironmentOutlined } from '@ant-design/icons';
+import { BankOutlined, ClockCircleOutlined, EnvironmentOutlined, UserOutlined, UserSwitchOutlined, WarningOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 interface Post {
+  Process: ReactNode;
   province: string;
   id: number;
   title: string;
@@ -18,10 +19,10 @@ interface Post {
 function HomePage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [technos, setTechnos] = useState<string[]>([]);
-  const [error, setError] = useState<string>('');
+  const [_, setError] = useState<string>('');
   const [searchTitle, setSearchTitle] = useState<string>('');
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
-  const [selectedTechno, setSelectedTechno] = useState<string>('');
+  const [, setSelectedTechno] = useState<string>('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,10 +104,12 @@ function HomePage() {
                   <Image src={post.img} alt={post.title} className='rounded-lg' style={{ height: "150px" }} />
                 </Col>
                 <Col className='mt-4'>
-                  <div className='text-l truncate ...'>{post.title}</div>
-                  <div className='font-bold mt-4'>฿ {post.price}</div>
-                  <div>{post.Roastlevel}</div>
-                  <div className='font-sx truncate ...'><EnvironmentOutlined /> จังหวัด{post.province}</div>
+                  <div className='text-l font-bold truncate ...'>{post.title}</div>
+                  <div className='font-bold mt-4'><UserOutlined />  {post.price}</div>
+                  <div className='text-sx mt-4'><BankOutlined /> {post.Process}</div>
+                  <div className='text-sx'><WarningOutlined />  {post.Roastlevel}</div>
+                  <div className='text-sx'><ClockCircleOutlined /> {post.Size}</div>
+                  
                 </Col>
               </Card>
             </Link>

@@ -4,8 +4,9 @@ import { Layout, Menu } from 'antd';
 
 const MenuProduce: React.FC = () => {
   const items1 = [
-    { key: '1', label: 'Produce', to: '/' },
-    { key: '2', label: 'Warehouse', to: '/Warehouse' },
+    { key: '1', label: 'หน้าแรก', to: '/' },
+    { key: '2', label: 'แจ้งซ่อม', to: '/Report_repairs' },
+    { key: '3', label: 'ประวัติการแจ้ง', to: '/Warehouse' },
     // { key: '3', label: 'Category', to: '/CatigoryPageProduce' },
   ];
 
@@ -16,7 +17,7 @@ const MenuProduce: React.FC = () => {
         theme="light"
         mode="inline"
         defaultSelectedKeys={['1']}
-        style={{ flex: 1, minWidth: 0,  backgroundColor:"#fff"}}
+        style={{ flex: 1, minWidth: 0,  backgroundColor:"#eaeaea"}}
       >
         {items1.map(item => (
           <Menu.Item key={item.key}>
